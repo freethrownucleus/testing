@@ -67,7 +67,7 @@ function processPostRequest(req, res) {
 
 function serveStaticFile(req, res) {
     let parsedUrl = url.parse(req.url);
-    let pathname = path.join(staticFolder, parsedUrl.pathname);
+    let pathname = path.join(staticFolder, parsedUrl.pathname === '/' ? 'index.html' : parsedUrl.pathname);
 
     fs.stat(pathname, (err, stats) => {
         if (err || !stats.isFile()) {
@@ -108,6 +108,7 @@ function serveStaticFile(req, res) {
         fs.createReadStream(pathname).pipe(res);
     });
 }
+
 
 function checkCredentials(nick, pass) {
     let i;
@@ -159,6 +160,6 @@ http.createServer(function(req, res) {
         res.writeHead(501, headers);
         res.end();
     }
-}).listen(3000);
+}).listen(8080);
 
-console.log("Server is running on http://localhost:3000");
+console.log("Server is running on http://localhost:8080");
